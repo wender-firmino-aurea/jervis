@@ -1,7 +1,22 @@
 language: java
-install: mvn install -DskipTests=true
-script: mvn test
+ 
+branches:
+ 
+  only:
+    - master
+    - release
+    - develop
+    - feature
+ 
 jenkins:
-  pipeline_jenkinsfile: Jenkinsfile 
+  #For OnPromise Project (Dev,QA,Regression)
+  pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
   collect:
-    artifacts: target/*.war
+    artifacts: 'target/*.jar'
+    junit: '**/*.xml'
+ 
+services:
+  petclinc:
+    docker_image:
+     path: .
+     name: registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
