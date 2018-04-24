@@ -1,22 +1,7 @@
 language: java
-
-branches:
-
-  only:
-    - master
-    - release
-    - develop
-    - feature
-
+script:
+  - mvn install -DskipTests=true
 jenkins:
-  pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
+  pipeline_jenkinsfile: Jenkinsfile 
   collect:
-    artifacts: 'target/*.jar'
-    junit: '**/*.xml'
-
-services:
-    petclinc:
-      docker_image:
-        path: .
-        name: registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
-        
+    artifacts: target/*.war
