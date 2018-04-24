@@ -1,1 +1,7 @@
-language: groovy
+language: java
+install: mvn install -DskipTests=true
+script: mvn test
+jenkins:
+  pipeline_jenkinsfile: Jenkinsfile 
+  collect:
+    artifacts: target/*.war
