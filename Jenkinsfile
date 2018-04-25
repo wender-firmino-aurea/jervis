@@ -1,18 +1,10 @@
 pipeline {
-agent any
-stages {
-stage('CHECK') {
-steps
-
-Unknown macro: { sh 'echo $DOCKER_LOGIN' }
-}
-stage('Build') {
-steps
-
-Unknown macro: { sh 'docker build . -t $IMAGE' }
-}
-}
-environment
-
-Unknown macro: { IMAGE = "aurea-demojervis}
+    agent { docker { image 'maven:3.3.3' } }
+    stages {
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+    }
 }
