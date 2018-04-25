@@ -1,5 +1,6 @@
 language: java
-
+script:
+    -mvn install -DskipTests=true
 jenkins:
   pipeline_jenkinsfile: Jenkinsfile
   collect:
