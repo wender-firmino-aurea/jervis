@@ -1,32 +1,6 @@
 language: java
- 
-branches:
- 
-  only:
-    - master
-    - release
-    - develop
-    - feature
- 
-jenkins:
-  #For OnPromise Project (Dev,QA,Regression)
-  pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
-  collect:
-    artifacts: 'target/*.jar'
-    junit: '**/*.xml'
- 
-services:
-  petclinc:
-    docker_image:
-     path: .
-     name: registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
 
-job:
-  name: my_hello_world_job
-  parameters:
-    - string:
-        name: Message
-        default: Hello World
-        description: A message to echo
-  builders:
-    - shell: "echo $Message"
+jenkins:
+  pipeline_jenkinsfile: Jenkinsfile
+  collect:
+    artifacts: target/*.war
