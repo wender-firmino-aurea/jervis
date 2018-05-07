@@ -1,0 +1,10 @@
+language: java
+install: true
+script:
+  - 'JERVIS_SECRETS_TEST="${JERVIS_SECRETS_TEST:-if you see this then the test failed}"'
+  - 'echo "Secret hidden on console: ${JERVIS_SECRETS_TEST}"'
+jenkins:
+  secrets_id: "jervis-secrets-test"
+  secrets:
+    - key: "JERVIS_SECRETS_TEST"
+      secret: 'lDjC1t95sDp05qM1MTL6hFRLFqIkr5aw5RUtuNu5VlIawg1edKPsv/B9p96QYSUeOI3cXpPpFHmSSArgMxp1x/hKHuYx0nqia7pwMGhEpJp5Qy1IKkV3d16LcGHUSuhlMn7ujSeCe18VNLPoECIUkCk+HAVEokyOQO8LgYOIPo/JdHpJQ4fqV4al6vYaozVPv4CEfh3+Bzr4NraxOG8yVIRGdz0VHnUBRXbezF6xZQE4hOq+DmqlFCmLSqRSlZDWE81z7L4tVZQCD6gex9TCLMKHZ5uOD2PeYkDBZpV0UpIkp34m6nTI1ZvwGR4JCGR3gNE936D9WP+LohFcz8ungw=='

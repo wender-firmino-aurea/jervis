@@ -1,0 +1,198 @@
+apply plugin: 'groovy'
+apply plugin: 'cobertura'
+apply plugin: 'com.github.kt3k.coveralls'
+//maven central
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = 'net.gleske'
+archivesBaseName = 'jervis'
+jar.baseName = 'jervis'
+version = '1.2-SNAPSHOT'
+
+ext.groovyVersion = System.getenv('GROOVY_VERSION')?: '2.4.13'
+ext.ossrhUsername = hasProperty('ossrhUsername')?project['ossrhUsername']:''
+ext.ossrhPassword = hasProperty('ossrhPassword')?project['ossrhPassword']:''
+
+//Apparently cobertura is only accurate at Java 1.6 byte code and earlier
+//However, this caused a bug that if this library is used on JDK7+ and then
+//throws a groovy exception.  Instead, an IncompatibleClassChangeError is thrown.
+//http://blog.proxerd.pl/article/how-to-fix-incompatibleclasschangeerror-for-your-groovy-projects-running-on-jdk7
+//sourceCompatibility = 1.6
+
+apply from: 'file:gradle/groovydoc.gradle'
+apply from: 'file:gradle/jervis.gradle'
+
+println "Using Groovy ${groovyVersion}"
+println "Using Gradle ${GradleVersion.current().getVersion()}"
+println "Using Java ${org.gradle.internal.jvm.Jvm.current()}"
+println "Building ${archivesBaseName}-${version}"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.6'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'
+    }
+}
+
+
+configurations.all {
+    resolutionStrategy {
+        //https://github.com/stevesaliman/gradle-cobertura-plugin/issues/56
+        // Cobertura includes an ASM version that can't handle Java 8, ASM 5.0.3+ handles Java8
+        force 'org.ow2.asm:asm:6.0'
+        forcedModules = [ 'org.ow2.asm:asm:6.0' ]
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
+    compile 'org.ow2.asm:asm:6.0'
+    compile 'org.yaml:snakeyaml:1.19'
+    testCompile 'junit:junit:4.12'
+}
+
+test {
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set heap size for the test JVM(s)
+    minHeapSize = '128m'
+    maxHeapSize = '512m'
+
+    //MaxPermSize was removed from Java 1.8
+    // set JVM arguments for the test JVM(s)
+    //jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+       logger.lifecycle('Running test: ' + descriptor)
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+       logger.lifecycle('Test: ' + descriptor + ' produced standard out/err: ' + event.message )
+    }
+}
+
+//http://jdpgrailsdev.github.io/blog/2014/04/29/gradle_cobertura.html
+//https://github.com/stevesaliman/gradle-cobertura-plugin/blob/master/usage.md
+cobertura {
+    //fix cobertura version
+    //https://github.com/stevesaliman/gradle-cobertura-plugin/issues/72
+    //coberturaVersion = '2.1.1'
+    //coberturaVersion = '2.0.3'
+    coverageFormats = ['html', 'xml']
+    coverageIgnoreTrivial = true
+    coverageIgnores = ['org.slf4j.Logger.*']
+    coverageExcludes = ['.*package-info.*', 'net\\.gleske\\.jervis\\.exceptions\\..*']
+
+    //coberturaCheck values 80% (./gradlew coberturaCheck test)
+    //coverageCheckBranchRate = 80
+    //coverageCheckLineRate = 80
+    coverageCheckPackageBranchRate = 50
+    coverageCheckPackageLineRate = 80
+    coverageCheckTotalBranchRate = 50
+    coverageCheckTotalLineRate = 80
+    coverageCheckHaltOnFailure = true
+
+}
+test.finalizedBy(project.tasks.cobertura)
+
+//http://swalsh.org/blog/2014/07/17/running-the-groovy-console-from-gradle/
+task( console, dependsOn: "classes", type: JavaExec ) {
+    main = "groovy.ui.Console"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+//Maven Central uploads
+task javadocJar(type: Jar, dependsOn: groovydoc) {
+    classifier = 'javadoc'
+    from groovydoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Jervis'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Travis-like Jenkins job generation using Jenkins Job DSL plugin groovy scripts. Reads .travis.yml and generates a job in Jenkins.'
+                url 'https://github.com/samrocketman/jervis'
+
+                scm {
+                    connection 'https://github.com/samrocketman/jervis.git'
+                    developerConnection 'git@github.com:samrocketman/jervis.git'
+                    url 'https://github.com/samrocketman/jervis'
+                }
+
+                licenses {
+                    license {
+                        name 'Apache License, Version 2.0'
+                        url 'https://raw.githubusercontent.com/samrocketman/jervis/master/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'sag47'
+                        name 'Sam Gleske'
+                        email 'sam.mxracer@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+//dependencies for building a jar
+jar.dependsOn tasks.findAll { task -> task.name.endsWith('Jar') }
+
+//disable optimizations for accurate branch coverage
+//http://pbetkier.blogspot.com/2014/08/groovy-code-coverage-issues.html
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(':cobertura')) {
+        compileGroovy.groovyOptions.optimizationOptions.all = false
+    }
+}
+
+
+//http://www.gradle.org/docs/current/userguide/gradle_wrapper.html
+//generate gradlew with: gradle wrapper
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.4.1'
+}
