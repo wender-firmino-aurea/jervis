@@ -13,6 +13,13 @@ String GITHUB_TOKEN = "c3823464726bf60ac25acf4267df31ad07274542"
 //Used by webhook callback URLs to increase security
 String SHARED_SECRET = "CHANGEME"
 
+master_settings = [
+    'admin_email': 'email@example.com',
+    'jnlp_slave_port': 9000,
+    'master_labels': 'jervis_generator',
+    'master_executors': 1,
+    'master_usage': 'NORMAL'
+]
 //GitHub credential required for Jervis API communication with api.github.com
 credentials = [
     [
@@ -39,7 +46,7 @@ credentials = [
 clouds_yadocker = [
     //YET ANOTHER DOCKER CLOUD (this is an item in a list of clouds)
     [
-        cloud_name: "docker-local-test",
+        cloud_name: "docker-local",
         docker_url: "tcp://localhost:2375",
         docker_templates: [
             //DOCKER TEMPLATE (this is an item in a list of templates)
@@ -72,6 +79,19 @@ clouds_yadocker = [
             ]
         ]
 
+    ]
+]
+
+pipeline_shared_libraries = [
+    'Jervis Global Library': [
+        'defaultVersion': 'master',
+        'implicit': true,
+        'allowVersionOverride': false,
+        'includeInChangesets': true,
+        'scm': [
+            'remote': 'https://github.com/trilogy-group/aurea-central-jervis-shared.git',
+            'credentialsId': 'github-user-and-token'
+        ]
     ]
 ]
 
