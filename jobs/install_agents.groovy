@@ -6,10 +6,10 @@ The only required change is updating GITHUB_USER and GITHUB_TOKEN.
 */
 
 //GitHub username
-String GITHUB_USER = "paulokinjo"
+String GITHUB_USER = ""
 //GitHub personal access token associated with the GitHub username
 //Recommended scopes: repo, read:org, admin:repo_hook, user:email
-String GITHUB_TOKEN = "c3823464726bf60ac25acf4267df31ad07274542"
+String GITHUB_TOKEN = ""
 //Used by webhook callback URLs to increase security
 String SHARED_SECRET = "CHANGEME"
 
