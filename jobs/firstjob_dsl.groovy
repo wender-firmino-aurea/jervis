@@ -66,12 +66,12 @@ println 'Installing agents...';
 // }
 
 // [
-//     'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://172.17.0.1:8080/scriptText',
+//     'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',
 // ].each {
 //   exec(it)
 // }
 
-def command = "curl --user \"admin:47098414b3fa40f3a994befc1ea55ca3\" --data-urlencode \"script=\$(< ./install_agents.groovy)\" http://172.17.0.1:8080/scriptText"
+def command = 'curl --user "admin:01f27f492862850a529084c3f71d6428" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',
 def proc = command.execute()
 proc.waitFor()              
 
