@@ -53,10 +53,6 @@ evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 
 println 'Installing agents...';
-def proc = '/opt/my_jenkins_home/workspace/_jervis_generator/assets/install_agents.sh'.execute()
-proc.consumeProcessOutput(sout, serr)
-proc.waitForOrKill(1000)
-log.info "out> $sout err> $serr"
 // def exec(cmd) {
 //   println cmd
 //   def process = new ProcessBuilder([ "sh", "-c", cmd])
@@ -77,6 +73,13 @@ log.info "out> $sout err> $serr"
 
 // 'curl --user "admin:01f27f492862850a529084c3f71d6428" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
 
+def command = '/opt/my_jenkins_home/workspace/_jervis_generator/assets/install_agents.sh'
+def proc = command.execute()
+proc.waitFor()              
+
+println "Process exit code: ${proc.exitValue()}"
+println "Std Err: ${proc.err.text}"
+println "Std Out: ${proc.in.text}" 
 //  "touch install_agents.groovy",
    // "printf '%s' " + agents + " > ./install_agents.groovy",
     // 'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',  
