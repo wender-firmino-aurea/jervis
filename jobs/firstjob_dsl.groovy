@@ -49,8 +49,9 @@ evaluate(readFileFromWorkspace('jobs/get_folder_credentials.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/is_pipeline.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/jenkins_job_multibranch_pipeline.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
+def agents = evaluate(readFileFromWorkspace('jobs/install_agents.groovy').toString())
 
-println 'Installing agents...';
+println 'Installing agents...' + agents;
 def exec(cmd) {
   println cmd
   def process = new ProcessBuilder([ "sh", "-c", cmd])
