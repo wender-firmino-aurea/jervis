@@ -56,7 +56,7 @@ def newFile = new File("install_agents.groovy")
 newFile.write agents
 newFile.createNewFile() 
 
-println 'Installing agents...' + newFile.text;
+println 'Installing agents...';
 def exec(cmd) {
   println cmd
   def process = new ProcessBuilder([ "sh", "-c", cmd])
@@ -70,7 +70,7 @@ def exec(cmd) {
 }
 
 [
-   'pwd'
+   'ls -al'
 ].each {
   exec(it)
 }
