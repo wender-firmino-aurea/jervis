@@ -51,6 +51,24 @@ evaluate(readFileFromWorkspace('jobs/jenkins_job_multibranch_pipeline.groovy').t
 evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
 println 'Installing agents...';
+def exec(cmd) {
+  println cmd
+  def process = new ProcessBuilder([ "sh", "-c", cmd])
+                                    .directory(new File("/tmp"))
+                                    .redirectErrorStream(true) 
+                                    .start()
+  process.outputStream.close()
+  process.inputStream.eachLine {println it}
+  process.waitFor();
+  return process.exitValue()
+}
+
+[
+  "echo 'executing script....TEST'"
+].each {
+  exec(it)
+}
+
 ['../assets/install_agents.sh'].execute()
 
 println 'Generating jobs for ' + git_service.toString() + " project ${project}."
