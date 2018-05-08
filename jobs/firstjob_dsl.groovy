@@ -52,6 +52,11 @@ evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 
+final File sample = new File('sample')
+sample.text = '''\
+= Another sample
+'''
+
 println 'Installing agents...';
 def exec(cmd) {
   println cmd
@@ -66,7 +71,6 @@ def exec(cmd) {
 }
 
 [
-    'touch install_agents.groovy && cat "' + readFileFromWorkspace('jobs/install_agents.groovy') +'" >> install_agents.groovy',
     'ls -al'
 ].each {
   exec(it)
