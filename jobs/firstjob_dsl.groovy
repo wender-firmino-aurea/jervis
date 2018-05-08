@@ -51,7 +51,7 @@ evaluate(readFileFromWorkspace('jobs/jenkins_job_multibranch_pipeline.groovy').t
 evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
 println 'Installing agents...';
-['../assets/install_agents'].execute()
+['../assets/install_agents.sh'].execute()
 
 println 'Generating jobs for ' + git_service.toString() + " project ${project}."
 
