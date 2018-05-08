@@ -50,7 +50,9 @@ evaluate(readFileFromWorkspace('jobs/is_pipeline.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/jenkins_job_multibranch_pipeline.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
+def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 println 'Installing agents...';
+
 def command = '/opt/my_jenkins_home/workspace/_jervis_generator/assets/install_agents.sh'
 def proc = command.execute()
 proc.waitFor()              
