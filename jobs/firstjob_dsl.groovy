@@ -51,27 +51,7 @@ evaluate(readFileFromWorkspace('jobs/jenkins_job_multibranch_pipeline.groovy').t
 evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
-
 println 'Installing agents...';
-// def exec(cmd) {
-//   println cmd
-//   def process = new ProcessBuilder([ "sh", "-c", cmd])
-//                                     .directory(new File("/opt/my_jenkins_home/workspace/_jervis_generator/jobs"))
-//                                     .redirectErrorStream(true) 
-//                                     .start()
-//   process.outputStream.close()
-//   process.inputStream.eachLine {println it}
-//   process.waitFor();
-//   return process.exitValue()
-// }
-
-// [
-//     'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',
-// ].each {
-//   exec(it)
-// }
-
-// 'curl --user "admin:01f27f492862850a529084c3f71d6428" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
 
 def command = '/opt/my_jenkins_home/workspace/_jervis_generator/assets/install_agents.sh'
 def proc = command.execute()
@@ -80,11 +60,7 @@ proc.waitFor()
 println "Process exit code: ${proc.exitValue()}"
 println "Std Err: ${proc.err.text}"
 println "Std Out: ${proc.in.text}" 
-//  "touch install_agents.groovy",
-   // "printf '%s' " + agents + " > ./install_agents.groovy",
-    // 'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',  
-    // 'find / -name "firstjob_dsl.groovy"',
-    // 'ls -al /' 
+
 
 println 'Generating jobs for ' + git_service.toString() + " project ${project}."
 
