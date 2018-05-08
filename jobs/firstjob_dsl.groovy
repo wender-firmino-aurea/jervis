@@ -66,14 +66,15 @@ def exec(cmd) {
 }
 
 [
-    'find / -name "firstjob_dsl.groovy"',
-    'ls -al /'    
+    'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< /opt/my_jenkins_home/workspace/_jervis_generator/jobs/install_agents.groovy)" http://localhost:8080/scriptText'    
 ].each {
   exec(it)
 }
 //  "touch install_agents.groovy",
    // "printf '%s' " + agents + " > ./install_agents.groovy",
     // 'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',  
+    // 'find / -name "firstjob_dsl.groovy"',
+    // 'ls -al /' 
 
 println 'Generating jobs for ' + git_service.toString() + " project ${project}."
 
