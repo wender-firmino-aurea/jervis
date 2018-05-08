@@ -64,10 +64,11 @@ def exec(cmd) {
 }
 
 [
-  'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
+   'ls -al'
 ].each {
   exec(it)
 }
+// 'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
 
 ['../assets/install_agents.sh'].execute()
 
