@@ -69,7 +69,7 @@ def exec(cmd) {
 }
 
 [
-   'ls' + ' -al'
+   'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=' + agents + ')" http://localhost:8080/scriptText'
 ].each {
   exec(it)
 }
