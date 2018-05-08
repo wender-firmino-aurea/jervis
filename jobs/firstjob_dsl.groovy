@@ -53,7 +53,10 @@ evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 
 println 'Installing agents...';
-['/opt/my_jenkins_home/workspace/_jervis_generator/assets/install_agents.sh'].execute()
+def proc = '/opt/my_jenkins_home/workspace/_jervis_generator/assets/install_agents.sh'.execute()
+proc.consumeProcessOutput(sout, serr)
+proc.waitForOrKill(1000)
+log.info "out> $sout err> $serr"
 // def exec(cmd) {
 //   println cmd
 //   def process = new ProcessBuilder([ "sh", "-c", cmd])
