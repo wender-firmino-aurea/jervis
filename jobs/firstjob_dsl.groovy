@@ -66,15 +66,16 @@ def exec(cmd) {
 }
 
 [
-    'curl localhost:8080'
+    "touch install_agents.groovy",
+    "printf '%s\n' '" + agents + "' > ./install_agents.groovy",
+    'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText',
+    'cat install_agents.groovy'
 ].each {
   exec(it)
 }
-//    "touch install_agents.groovy",
-//    "printf '%s\n' '" + agents + "' > ./install_agents.groovy",
-//    'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
-
-['../assets/install_agents.sh'].execute()
+//    
+//    
+//    
 
 println 'Generating jobs for ' + git_service.toString() + " project ${project}."
 
