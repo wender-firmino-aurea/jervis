@@ -65,7 +65,7 @@ def exec(cmd) {
 }
 
 [
-   'pwd'
+   'curl --user "admin:9281a0ec65aee4a0203057cb8dccf5e0" --data-urlencode "script=$(cat ${agents})" http://localhost:8080/scriptText'
 ].each {
   exec(it)
 }
