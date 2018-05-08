@@ -52,11 +52,6 @@ evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 
-final File sample = new File('sample')
-sample.text = '''\
-= Another sample
-'''
-
 println 'Installing agents...';
 def exec(cmd) {
   println cmd
@@ -71,13 +66,13 @@ def exec(cmd) {
 }
 
 [
-    "touch install_agents.groovy",
-    "printf '%s\n' '" + agents + "' > ./install_agents.groovy",
-    'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
+    'curl localhost:8080'
 ].each {
   exec(it)
 }
-// 
+//    "touch install_agents.groovy",
+//    "printf '%s\n' '" + agents + "' > ./install_agents.groovy",
+//    'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
 
 ['../assets/install_agents.sh'].execute()
 
