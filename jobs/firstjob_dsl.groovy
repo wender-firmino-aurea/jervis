@@ -66,7 +66,6 @@ def exec(cmd) {
 }
 
 [
-    'curl --version',
     'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://172.17.0.1:8080/scriptText',
 ].each {
   exec(it)
