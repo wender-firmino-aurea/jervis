@@ -66,8 +66,8 @@ def exec(cmd) {
 }
 
 [
-    'find /home -name "firstjob_dsl.groovy"',
-    'ls -al /home'    
+    'find / -name "firstjob_dsl.groovy"',
+    'ls -al /'    
 ].each {
   exec(it)
 }
