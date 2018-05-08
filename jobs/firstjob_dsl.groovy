@@ -66,7 +66,7 @@ def exec(cmd) {
 }
 
 [
-    'touch install_agents.groovy && cat "' + agents +'" >> install_agents.groovy',
+    'touch install_agents.groovy && cat "' + readFileFromWorkspace('jobs/install_agents.groovy') +'" >> install_agents.groovy',
     'ls -al'
 ].each {
   exec(it)
