@@ -49,9 +49,14 @@ evaluate(readFileFromWorkspace('jobs/get_folder_credentials.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/is_pipeline.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/jenkins_job_multibranch_pipeline.groovy').toString())
 evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
+
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 
-println 'Installing agents...' + agents;
+def newFile = new File("install_agents.groovy")
+newFile.write = agents
+newFile.createNewFile() 
+
+println 'Installing agents...' + newFile.text;
 def exec(cmd) {
   println cmd
   def process = new ProcessBuilder([ "sh", "-c", cmd])
@@ -65,11 +70,11 @@ def exec(cmd) {
 }
 
 [
-   'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(cat ${agents})" http://localhost:8080/scriptText'
+   'pwd'
 ].each {
   exec(it)
 }
-// 'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
+// 'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./${agents})" http://localhost:8080/scriptText'
 
 ['../assets/install_agents.sh'].execute()
 
