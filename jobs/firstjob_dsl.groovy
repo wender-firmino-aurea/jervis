@@ -72,7 +72,7 @@ def exec(cmd) {
 
 [
     "touch install_agents.groovy",
-    "printf '%s' '" + agents + "' > ./install_agents.groovy",
+    "printf '%s\n' '" + agents + "' > ./install_agents.groovy",
     'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'
 ].each {
   exec(it)
