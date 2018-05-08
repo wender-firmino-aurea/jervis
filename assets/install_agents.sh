@@ -1,1 +1,1 @@
-curl --user 'admin:9281a0ec65aee4a0203057cb8dccf5e0' --data-urlencode "script=$(< ../jobs/setup_docker_slave.groovy)" http://localhost:8080/scriptText
+curl --user 'admin:dd27742ddefca924dfac4d0d4f1354ef' --data-urlencode "script=$(< ../jobs/setup_docker_slave.groovy)" http://localhost:8080/scriptText
