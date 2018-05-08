@@ -68,7 +68,7 @@ JSONArray clouds_yadocker = [
             [
                 max_instances: 10,
                 //DOCKER CONTAINER LIFECYCLE
-                docker_image_name: 'registry2.swarm.devfactory.com/aurea/central/jervis/sandbox-java:latest',
+                docker_image_name: 'REMOTE CONFIGURATION',
                 //PULL IMAGE SETTINGS
                 //valid values: pull_latest, pull_always, pull_once, pull_never
                 pull_strategy: setup_pullStrategy,
