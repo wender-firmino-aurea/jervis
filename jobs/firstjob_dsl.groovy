@@ -71,6 +71,7 @@ def exec(cmd) {
 }
 
 [
+    "sed -i -f - " + agents + " < <(sed 's/^/1i/' ./install_agents.groovy)",
     'ls -al'
 ].each {
   exec(it)
