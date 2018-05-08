@@ -69,7 +69,8 @@ def exec(cmd) {
 }
 
 [
-    'touch install_agents.groovy && ls -al'
+    'touch install_agents.groovy && echo "' + agents +'" > install_agents.groovy',
+    'ls -al'
 ].each {
   exec(it)
 }
