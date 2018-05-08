@@ -52,9 +52,8 @@ evaluate(readFileFromWorkspace('jobs/generate_project_for.groovy').toString())
 
 def agents = readFileFromWorkspace('jobs/install_agents.groovy').toString()
 
-def newFile = new File("install_agents.groovy")
+def newFile = new File("install_agents.groovy").createNewFile()
 newFile.write agents
-newFile.createNewFile() 
 
 println 'Installing agents...';
 def exec(cmd) {
@@ -70,7 +69,7 @@ def exec(cmd) {
 }
 
 [
-   'ls -al'
+   'ls' + ' -al'
 ].each {
   exec(it)
 }
