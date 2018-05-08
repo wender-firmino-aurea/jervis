@@ -64,7 +64,7 @@ def exec(cmd) {
 }
 
 [
-   'ls -al'
+   'pwd'
 ].each {
   exec(it)
 }
