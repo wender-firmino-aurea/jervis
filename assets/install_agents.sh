@@ -1,4 +1,6 @@
 #!/bin/bash
+#DESCRIPTION
+#  Script to simplify appending credential to agent creation process.
 echo "Accessing jenkins remotely..."
 env
 echo $JENKINS_API_TOKEN_USER
