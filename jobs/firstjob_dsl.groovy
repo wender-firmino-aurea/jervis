@@ -56,7 +56,7 @@ println 'Installing agents...';
 def exec(cmd) {
   println cmd
   def process = new ProcessBuilder([ "sh", "-c", cmd])
-                                    .directory(new File("/tmp"))
+                                    .directory(new File("/opt/my_jenkins_home/workspace/_jervis_generator/jobs"))
                                     .redirectErrorStream(true) 
                                     .start()
   process.outputStream.close()
@@ -66,7 +66,7 @@ def exec(cmd) {
 }
 
 [
-    'sudo curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< /opt/my_jenkins_home/workspace/_jervis_generator/jobs/install_agents.groovy)" http://localhost:8080/scriptText'    
+    'curl --user "admin:dd27742ddefca924dfac4d0d4f1354ef" --data-urlencode "script=$(< ./install_agents.groovy)" http://localhost:8080/scriptText'    
 ].each {
   exec(it)
 }
